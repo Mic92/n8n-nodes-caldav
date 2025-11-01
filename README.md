@@ -1,35 +1,44 @@
 # n8n-nodes-caldav
 
-This is an n8n community node for CalDAV integration. It lets you use CalDAV servers (Nextcloud, iCloud, Radicale, etc.) in your n8n workflows.
+> 🔌 Connect your calendars to n8n! Automate Nextcloud, iCloud, Google Calendar, and any CalDAV-compatible calendar.
+
+![Status](https://img.shields.io/badge/status-development-yellow)
 
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
-## Features
+## Quick Start
 
-- ✅ **Calendar Operations**: List all calendars from your CalDAV server
-- ✅ **Event Operations**: Create, read, update, delete calendar events
-- ✅ **Todo Operations**: Full CRUD support for CalDAV todos/tasks
-- ✅ **Trigger Node**: Poll for new or updated events
-- ✅ **Server Support**: Works with Nextcloud, iCloud, Radicale, and any CalDAV-compliant server
-- ✅ **Recurring Events**: Support for RRULE (recurrence rules)
-- ✅ **Attendees**: Manage event attendees via email
-- ✅ **Conflict Detection**: ETag support prevents lost updates
+1. Install the node (see [Installation](#installation) below)
+2. Add your calendar credentials (see [Setup Guide](#setup-guide))
+3. Start automating! ✨
+
+## What You Can Do
+
+### 📅 Manage Your Calendar
+- List all your calendars
+- Create, view, update, and delete events
+- Create and manage todos/tasks
+- Add attendees to events
+- Set up recurring events (daily meetings, weekly reminders, etc.)
+
+### 🔔 Automate with Triggers
+- Get notified when someone creates a new event
+- React when events are updated or rescheduled
+- Trigger workflows when events start (great for reminders!)
+- Works perfectly with recurring events - each occurrence triggers separately
+
+### 🔗 Works With Your Favorite Calendar Apps
+- ✅ Nextcloud Calendar
+- ✅ iCloud Calendar
+- ✅ Google Calendar (via CalDAV)
+- ✅ Radicale
+- ✅ Any CalDAV-compatible calendar server
 
 ## Installation
 
-### Community Nodes (Recommended)
+This node is currently in development and not yet published to npm.
 
-For user installations in n8n, install via the [Community Nodes](https://docs.n8n.io/integrations/community-nodes/installation/) interface:
-
-1. Go to **Settings** > **Community Nodes**
-2. Select **Install**
-3. Enter `n8n-nodes-caldav` in **Enter npm package name**
-4. Agree to the [risks](https://docs.n8n.io/integrations/community-nodes/risks/) of using community nodes
-5. Select **Install**
-
-After installing the node, you can use it like any other node in n8n.
-
-### Manual Installation (Development)
+### Manual Installation
 
 ```bash
 # Clone the repository
@@ -48,161 +57,223 @@ cd ~/.n8n/custom
 npm link n8n-nodes-caldav
 ```
 
-## Configuration
+After linking, restart n8n and the CalDAV nodes will be available in your node palette.
 
-### Credentials
+## Setup Guide
 
-This node uses Basic Authentication. You'll need:
+After installing the node, you'll need to connect it to your calendar:
 
-- **Server URL**: Your CalDAV server URL
-  - Nextcloud: `https://your-nextcloud.com/remote.php/dav`
-  - iCloud: `https://caldav.icloud.com`
-  - Radicale: `https://your-radicale.com`
-- **Username**: Your CalDAV username
-- **Password**: Your CalDAV password (or app-specific password for iCloud)
+### Nextcloud Calendar
 
-### Server-Specific Notes
+1. **Server URL**: `https://your-nextcloud.com/remote.php/dav`
+   - Replace `your-nextcloud.com` with your actual Nextcloud server address
+2. **Username**: Your Nextcloud username
+3. **Password**: Your Nextcloud password
+   - **Tip**: For better security, create an app-specific password in Nextcloud Settings → Security
 
-#### Nextcloud
-- URL format: `https://your-domain.com/remote.php/dav`
-- Use your regular Nextcloud username and password
-- Or create an app-specific password in Settings > Security
+### iCloud Calendar
 
-#### iCloud
-- URL: `https://caldav.icloud.com`
-- Username: Your Apple ID email
-- Password: Generate an app-specific password at appleid.apple.com
+1. **Server URL**: `https://caldav.icloud.com`
+2. **Username**: Your Apple ID email address
+3. **Password**: You'll need an app-specific password
+   - Go to [appleid.apple.com](https://appleid.apple.com)
+   - Navigate to "Sign-In and Security" → "App-Specific Passwords"
+   - Generate a new password for n8n
 
-#### Radicale
-- URL: Your Radicale server URL
-- Use your configured Radicale credentials
+### Google Calendar
 
-## Operations
+1. **Server URL**: `https://apidata.googleusercontent.com/caldav/v2/`
+2. **Username**: Your full Gmail address
+3. **Password**: Create an app password in your Google account settings
+   - Note: You'll need to enable 2-factor authentication first
 
-### Calendar Resource
+### Other CalDAV Servers (Radicale, Baikal, etc.)
 
-- **Get All**: List all available calendars
+1. **Server URL**: Your server's CalDAV URL (ask your admin if unsure)
+2. **Username**: Your account username
+3. **Password**: Your account password
 
-### Event Resource
+## How to Use
 
-- **Create**: Create a new event
-- **Get**: Get a single event by URL
-- **Get All**: Get all events from a calendar (with optional time range filtering)
-- **Update**: Update an existing event (requires ETag)
-- **Delete**: Delete an event
+### Working with Calendars
 
-### Todo Resource
+- **List Calendars**: See all your available calendars
 
-- **Create**: Create a new todo/task
-- **Get**: Get a single todo by URL
-- **Get All**: Get all todos from a calendar
-- **Update**: Update an existing todo (requires ETag)
-- **Delete**: Delete a todo
+### Working with Events
 
-### Trigger
+- **Create Event**: Add a new event to your calendar
+  - Set title, start/end times, location, description
+  - Add attendees by email
+  - Create recurring events (daily, weekly, monthly, etc.)
+- **Get Event**: Retrieve a specific event
+- **Get All Events**: Fetch all events from a calendar
+  - Optional: Filter by date range to get only upcoming events
+- **Update Event**: Modify an existing event
+- **Delete Event**: Remove an event from your calendar
 
-- **Event Created**: Trigger when new events are created
-- **Event Updated**: Trigger when events are modified
-- **Event Started**: Trigger when events start
+### Working with Todos
 
-## Usage Examples
+- **Create Todo**: Add a new task to your calendar
+- **Get Todo**: Retrieve a specific todo
+- **Get All Todos**: Fetch all tasks from a calendar
+- **Update Todo**: Modify an existing todo (change status, priority, etc.)
+- **Delete Todo**: Remove a todo from your calendar
 
-### Example 1: Create Event from Form Submission
+### Triggers (Start Workflows Automatically)
 
+The CalDAV Trigger node watches your calendar and starts workflows when things happen:
+
+- **Event Created**: Triggers when someone creates a new event
+  - Great for: Sending welcome emails to meeting attendees, logging new bookings
+
+- **Event Updated**: Triggers when someone changes an event
+  - Great for: Notifying attendees of schedule changes, updating external systems
+
+- **Event Started**: Triggers when an event begins
+  - Great for: Sending meeting reminders, starting Zoom calls, posting to Slack
+  - **Bonus**: For recurring events (like "Daily Standup"), this triggers for each occurrence
+
+## Real-World Examples
+
+### 💼 Automatic Meeting Room Booking
+
+When someone books a meeting through your website:
 ```
-Webhook (Form submission)
+Webhook (booking form)
   ↓
 CalDAV: Create Event
-  - Summary: {{$json.title}}
-  - Start: {{$json.start_time}}
-  - End: {{$json.end_time}}
-  - Attendees: {{$json.email}}
   ↓
-Send Email (Confirmation)
+Send confirmation email
 ```
 
-### Example 2: Daily Event Digest
+### 📧 Daily Schedule Email
 
+Get your day's schedule every morning:
 ```
-Schedule Trigger (Daily 6 AM)
+Schedule Trigger (Every day at 6 AM)
   ↓
-CalDAV: Get All Events
-  - Time Range Start: {{$now}}
-  - Time Range End: {{$now.plus(1, 'day')}}
+CalDAV: Get All Events (today only)
   ↓
-Email: Send daily schedule
+Send email with your schedule
 ```
 
-### Example 3: Event Reminders
+### 🔔 Smart Meeting Reminders
 
+Get reminded when any meeting starts (works great with recurring meetings!):
 ```
 CalDAV Trigger: Event Started
   ↓
-Send SMS Reminder
+Send SMS/Slack message
 ```
+**Special feature**: If you have a "Daily Standup" recurring event, you'll get a reminder every single day automatically!
 
-### Example 4: Sync Events to Database
+### 📊 Calendar Analytics
 
+Track all your meetings in a database:
 ```
 CalDAV Trigger: Event Created
   ↓
-Postgres: Insert event into database
+Save to database (Postgres/MySQL/etc.)
+  ↓
+Build reports on meeting trends
+```
+
+### 🎯 Task Management Integration
+
+Sync your calendar todos with your project management tool:
+```
+CalDAV Trigger: Event Created (on "Tasks" calendar)
+  ↓
+Create card in Trello/Asana/Jira
 ```
 
 ## Recurring Events
 
-Recurring events are supported via RRULE format:
+You can create events that repeat automatically! Here are some examples:
 
-```
-FREQ=DAILY;COUNT=10              # Daily for 10 occurrences
-FREQ=WEEKLY;BYDAY=MO,WE,FR       # Every Monday, Wednesday, Friday
-FREQ=MONTHLY;BYMONTHDAY=15       # 15th of every month
-FREQ=YEARLY;BYMONTH=1;BYMONTHDAY=1  # Every January 1st
-```
+### Common Recurring Event Patterns
 
-## Development
+When creating an event, use the "Recurrence Rule" field:
+
+- **Daily standup for 10 days**: `FREQ=DAILY;COUNT=10`
+- **Weekly team meeting (every Monday)**: `FREQ=WEEKLY;BYDAY=MO`
+- **Bi-weekly sprint planning**: `FREQ=WEEKLY;INTERVAL=2;BYDAY=MO`
+- **Monthly review (every 15th)**: `FREQ=MONTHLY;BYMONTHDAY=15`
+- **Annual company party**: `FREQ=YEARLY;BYMONTH=12;BYMONTHDAY=25`
+- **Gym every Mon/Wed/Fri**: `FREQ=WEEKLY;BYDAY=MO,WE,FR`
+
+### How Triggers Handle Recurring Events
+
+- **Event Created/Updated triggers**: Get notified once when you create or modify the series
+  - Example: When you create "Weekly Team Meeting", you get 1 trigger
+
+- **Event Started trigger**: Get notified for each occurrence
+  - Example: "Weekly Team Meeting" triggers every Monday
+  - Perfect for sending reminders or starting Zoom calls automatically!
+
+## Troubleshooting
+
+### "Calendar not found" error
+
+Make sure you're using the correct server URL for your calendar provider (see Setup Guide above).
+
+### Authentication failed
+
+- **iCloud users**: You must use an app-specific password, not your regular password
+- **Google Calendar users**: Enable 2-factor authentication and create an app password
+- **Nextcloud users**: Check that your username and password are correct
+
+### Events not showing up
+
+- Try using "Get All Events" without filters first to see if events are being retrieved
+- Check that you're looking at the correct calendar
+- For time-range filters, make sure your dates are in the correct format
+
+### Trigger not firing
+
+- Triggers poll your calendar periodically (check your n8n polling interval settings)
+- Make sure the calendar URL in your trigger matches exactly
+- For "Event Started" triggers, the event must start within the polling interval
+
+## Need Help?
+
+- 📖 [n8n Community Forum](https://community.n8n.io/)
+- 🐛 [Report bugs on GitHub](https://github.com/Mic92/n8n-nodes-caldav/issues)
+- 💬 [n8n Discord](https://discord.gg/n8n)
+
+## Version Requirements
+
+- **n8n**: 1.0.0 or higher
+- **Node.js**: 18.x or higher
+
+## For Developers
+
+Want to contribute or modify this node?
 
 ```bash
 # Install dependencies
 npm install
 
-# Watch mode (auto-compile on changes)
-npm run dev
-
-# Build
+# Build the node
 npm run build
 
-# Format code
-npm run format
+# Run tests
+npm test
 
-# Lint
-npm run lint
-
-# Fix lint issues
-npm run lintfix
+# Auto-compile on changes
+npm run dev
 ```
 
-## Compatibility
-
-- n8n version: 1.0.0+
-- Node.js: 18.x or higher
-
-## Resources
-
-- [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
-- [CalDAV RFC 4791](https://tools.ietf.org/html/rfc4791)
-- [iCalendar RFC 5545](https://tools.ietf.org/html/rfc5545)
+See our [contribution guidelines](CONTRIBUTING.md) for more details.
 
 ## License
 
-[MIT](LICENSE.md)
+[MIT](LICENSE.md) - Free to use and modify!
 
 ## Credits
 
-Built with:
-- [tsdav](https://github.com/natelindev/tsdav) - TypeScript CalDAV client
-- [ical.js](https://github.com/kewisch/ical.js) - iCalendar parser
+This node is built with:
+- [tsdav](https://github.com/natelindev/tsdav) - CalDAV client library
+- [ical.js](https://github.com/kewisch/ical.js) - Calendar event parser
 
-## Support
-
-For issues and feature requests, please use the [GitHub issue tracker](https://github.com/Mic92/n8n-nodes-caldav/issues).
+Thanks to all [contributors](https://github.com/Mic92/n8n-nodes-caldav/graphs/contributors)!
