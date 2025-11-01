@@ -124,6 +124,12 @@ export class CalDavTrigger implements INodeType {
       ? new Date(webhookData.lastTimeChecked as string)
       : new Date(now.getTime() - 60 * 60 * 1000); // Default: 1 hour ago
 
+    // Initialize ETag storage for tracking event changes
+    if (!webhookData.knownEvents) {
+      webhookData.knownEvents = {};
+    }
+    const knownEvents = webhookData.knownEvents as { [uid: string]: string };
+
     try {
       const client = await getCalDavClient.call(this);
       const calendar = (await client.fetchCalendars()).find(
@@ -138,16 +144,20 @@ export class CalDavTrigger implements INodeType {
       const fetchOptions: {
         calendar: typeof calendar;
         timeRange?: { start: string; end: string };
+        expand?: boolean;
       } = {
         calendar,
       };
 
-      // For event started, use time range
+      // For event started, use time range and expand recurring events
+      // This follows Google Calendar's behavior: expand recurring events for
+      // eventStarted so users get individual triggers for each occurrence
       if (triggerOn === "eventStarted") {
         fetchOptions.timeRange = {
           start: lastTimeChecked.toISOString(),
           end: now.toISOString(),
         };
+        fetchOptions.expand = true;
       }
 
       const objects = await client.fetchCalendarObjects(fetchOptions);
@@ -175,11 +185,35 @@ export class CalDavTrigger implements INodeType {
           const startTime = new Date(event.start);
           return startTime >= lastTimeChecked && startTime <= now;
         });
-      } else if (triggerOn === "eventCreated" || triggerOn === "eventUpdated") {
-        // For create/update, we can't reliably detect changes without storing state
-        // This is a simplified implementation that returns all events
-        // A more robust implementation would store event UIDs and ETags
-        filteredEvents = events;
+      } else if (triggerOn === "eventCreated") {
+        // New events don't have stored ETags
+        filteredEvents = events.filter((event) => !knownEvents[event.uid]);
+      } else if (triggerOn === "eventUpdated") {
+        // Updated events have different ETags than stored ones
+        // Only include events we've seen before (not new ones)
+        filteredEvents = events.filter((event) => {
+          const oldEtag = knownEvents[event.uid];
+          return oldEtag && oldEtag !== event.etag;
+        });
+      }
+
+      // Update stored ETags only for triggers that use ETag tracking
+      // For eventStarted, we use time-based filtering so we skip ETag tracking
+      // to avoid issues with expanded recurring events (which share the same UID)
+      if (triggerOn === "eventCreated" || triggerOn === "eventUpdated") {
+        // Update stored ETags for all current events
+        // This ensures we track both new and updated events
+        events.forEach((event) => {
+          knownEvents[event.uid] = event.etag || "";
+        });
+
+        // Clean up deleted events to prevent unbounded storage growth
+        const currentUids = new Set(events.map((e) => e.uid));
+        Object.keys(knownEvents).forEach((uid) => {
+          if (!currentUids.has(uid)) {
+            delete knownEvents[uid];
+          }
+        });
       }
 
       // Update last check time

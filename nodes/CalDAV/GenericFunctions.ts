@@ -12,6 +12,33 @@ import type {
 } from "n8n-workflow";
 
 /**
+ * Normalize a URL for consistent comparison
+ * Removes trailing slashes from pathname
+ * Handles both absolute URLs and relative paths when baseUrl is provided
+ */
+function normalizeCalendarUrl(url: string, baseUrl?: string): string {
+  const parsed = new URL(url, baseUrl);
+  // Remove trailing slash from pathname for consistent comparison
+  parsed.pathname = parsed.pathname.replace(/\/+$/, "") || "/";
+  return parsed.href;
+}
+
+/**
+ * Find a calendar by URL with normalized comparison
+ */
+export function findCalendarByUrl(
+  calendars: Array<{ url: string }>,
+  calendarUrl: string,
+  serverUrl?: string,
+): { url: string } | undefined {
+  const normalizedTarget = normalizeCalendarUrl(calendarUrl, serverUrl);
+  return calendars.find((c) => {
+    const normalizedCalendar = normalizeCalendarUrl(c.url, serverUrl);
+    return normalizedCalendar === normalizedTarget;
+  });
+}
+
+/**
  * Create and authenticate a CalDAV client
  */
 export async function getCalDavClient(
@@ -144,14 +171,14 @@ export function eventToICalendar(
     vevent.updatePropertyWithValue("dtend", endDate);
   } else {
     // Regular events use DATETIME format
-    const dtstart = ICAL.Time.fromString(
-      start.replace(/[-:]/g, "").replace(/\.\d{3}Z?/, ""),
-      null,
-    );
-    const dtend = ICAL.Time.fromString(
-      end.replace(/[-:]/g, "").replace(/\.\d{3}Z?/, ""),
-      null,
-    );
+    // Parse date strings into Date objects first for robustness
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    // Create ICAL.Time from Date objects (more robust than string parsing)
+    const dtstart = ICAL.Time.fromJSDate(startDate, true); // true = use UTC
+    const dtend = ICAL.Time.fromJSDate(endDate, true);
+
     vevent.updatePropertyWithValue("dtstart", dtstart);
     vevent.updatePropertyWithValue("dtend", dtend);
   }
@@ -229,12 +256,9 @@ export function todoToICalendar(
     );
   }
   if (additionalFields.due) {
-    const dueDate = ICAL.Time.fromString(
-      (additionalFields.due as string)
-        .replace(/[-:]/g, "")
-        .replace(/\.\d{3}Z?/, ""),
-      null,
-    );
+    // Parse date string into Date object first for robustness
+    const dueDateObj = new Date(additionalFields.due as string);
+    const dueDate = ICAL.Time.fromJSDate(dueDateObj, true); // true = use UTC
     vtodo.updatePropertyWithValue("due", dueDate);
   }
   if (additionalFields.priority !== undefined) {
