@@ -1,0 +1,38 @@
+{
+	"name": "CalDAV Test - Get All Calendars",
+	"nodes": [
+		{
+			"parameters": {},
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 0],
+			"id": "manual-trigger",
+			"name": "When clicking 'Execute Workflow'"
+		},
+		{
+			"parameters": {
+				"resource": "calendar",
+				"operation": "getAll"
+			},
+			"type": "n8n-nodes-caldav.calDav",
+			"typeVersion": 1,
+			"position": [200, 0],
+			"id": "caldav-calendar-getall",
+			"name": "Get All Calendars"
+		}
+	],
+	"connections": {
+		"When clicking 'Execute Workflow'": {
+			"main": [
+				[
+					{
+						"node": "Get All Calendars",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"pinData": {}
+}

@@ -1,0 +1,71 @@
+{
+  "name": "n8n-nodes-caldav",
+  "version": "1.0.0",
+  "description": "n8n node for CalDAV integration with support for Nextcloud, iCloud, Radicale, and other CalDAV servers",
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "caldav",
+    "calendar",
+    "nextcloud",
+    "icloud",
+    "radicale"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/n8n-nodes-caldav",
+  "author": {
+    "name": "Jörg Thalheim",
+    "email": "joerg@thalheim.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mic92/n8n-nodes-caldav.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials test --write",
+    "lint": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' 'test/**/*.ts'",
+    "lintfix": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' 'test/**/*.ts' --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run build && npm run lint"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/CalDavApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/CalDAV/CalDav.node.js",
+      "dist/nodes/CalDAV/CalDavTrigger.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-n8n-nodes-base": "^1.16.1",
+    "jest": "^29.7.0",
+    "n8n-core": "^1.71.0",
+    "n8n-workflow": "^1.17.0",
+    "prettier": "^3.3.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "ical.js": "^2.0.1",
+    "tsdav": "^2.1.6"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
