@@ -1,50 +1,50 @@
 {
-	"name": "CalDAV Test - Create Basic Event",
-	"nodes": [
-		{
-			"parameters": {},
-			"type": "n8n-nodes-base.manualTrigger",
-			"typeVersion": 1,
-			"position": [0, 0],
-			"id": "manual-trigger",
-			"name": "When clicking 'Execute Workflow'"
-		},
-		{
-			"parameters": {
-				"resource": "event",
-				"operation": "create",
-				"calendar": {
-					"__rl": true,
-					"mode": "url",
-					"value": "http://127.0.0.1:5232/test/calendar/"
-				},
-				"summary": "Test Event",
-				"start": "={{ $now.plus({ hours: 1 }).toISO() }}",
-				"end": "={{ $now.plus({ hours: 2 }).toISO() }}",
-				"additionalFields": {
-					"description": "This is a test event",
-					"location": "Test Location"
-				}
-			},
-			"type": "n8n-nodes-caldav.calDav",
-			"typeVersion": 1,
-			"position": [200, 0],
-			"id": "caldav-event-create",
-			"name": "Create Event"
-		}
-	],
-	"connections": {
-		"When clicking 'Execute Workflow'": {
-			"main": [
-				[
-					{
-						"node": "Create Event",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		}
-	},
-	"pinData": {}
+  "name": "CalDAV Test - Create Basic Event",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "manual-trigger",
+      "name": "When clicking 'Execute Workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendar": {
+          "__rl": true,
+          "mode": "url",
+          "value": "http://127.0.0.1:5232/test/calendar/"
+        },
+        "summary": "Test Event",
+        "start": "={{ $now.plus({ hours: 1 }).toISO() }}",
+        "end": "={{ $now.plus({ hours: 2 }).toISO() }}",
+        "additionalFields": {
+          "description": "This is a test event",
+          "location": "Test Location"
+        }
+      },
+      "type": "n8n-nodes-caldav.calDav",
+      "typeVersion": 1,
+      "position": [200, 0],
+      "id": "caldav-event-create",
+      "name": "Create Event"
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute Workflow'": {
+      "main": [
+        [
+          {
+            "node": "Create Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
 }

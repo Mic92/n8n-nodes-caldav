@@ -152,12 +152,16 @@ export class CalDav implements INodeType {
             const client = await getCalDavClient.call(this);
             const calendars = await client.fetchCalendars();
 
-            const calendar = findCalendarByUrl(calendars, calendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              calendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
                 this.getNode(),
-                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map(c => c.url).join(", ")}`,
+                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map((c) => c.url).join(", ")}`,
                 {
                   itemIndex: i,
                 },
@@ -220,9 +224,16 @@ export class CalDav implements INodeType {
             const client = await getCalDavClient.call(this);
 
             // Extract calendar URL from event URL (remove the filename)
-            const eventCalendarUrl = eventUrl.substring(0, eventUrl.lastIndexOf("/") + 1);
+            const eventCalendarUrl = eventUrl.substring(
+              0,
+              eventUrl.lastIndexOf("/") + 1,
+            );
             const calendars = await client.fetchCalendars();
-            const calendar = findCalendarByUrl(calendars, eventCalendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              eventCalendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
@@ -268,12 +279,16 @@ export class CalDav implements INodeType {
             const calendars = await client.fetchCalendars();
 
             // Normalize URLs for comparison using shared helper
-            const calendar = findCalendarByUrl(calendars, calendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              calendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
                 this.getNode(),
-                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map(c => c.url).join(", ")}`,
+                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map((c) => c.url).join(", ")}`,
                 {
                   itemIndex: i,
                 },
@@ -289,8 +304,16 @@ export class CalDav implements INodeType {
             };
 
             // Add time range if both start and end are specified
-            const timeMin = this.getNodeParameter("options.timeMin", i, "") as string;
-            const timeMax = this.getNodeParameter("options.timeMax", i, "") as string;
+            const timeMin = this.getNodeParameter(
+              "options.timeMin",
+              i,
+              "",
+            ) as string;
+            const timeMax = this.getNodeParameter(
+              "options.timeMax",
+              i,
+              "",
+            ) as string;
             if (timeMin && timeMax) {
               fetchOptions.timeRange = {
                 start: timeMin,
@@ -299,7 +322,11 @@ export class CalDav implements INodeType {
             }
 
             // Add expand option
-            const expand = this.getNodeParameter("options.expand", i, false) as boolean;
+            const expand = this.getNodeParameter(
+              "options.expand",
+              i,
+              false,
+            ) as boolean;
             if (expand) {
               fetchOptions.expand = true;
             }
@@ -366,9 +393,16 @@ export class CalDav implements INodeType {
             const serverUrl = credentials.serverUrl as string;
 
             // Extract calendar URL from event URL (remove the filename)
-            const eventCalendarUrl = eventUrl.substring(0, eventUrl.lastIndexOf("/") + 1);
+            const eventCalendarUrl = eventUrl.substring(
+              0,
+              eventUrl.lastIndexOf("/") + 1,
+            );
             const calendars = await client.fetchCalendars();
-            const calendar = findCalendarByUrl(calendars, eventCalendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              eventCalendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
@@ -467,12 +501,16 @@ export class CalDav implements INodeType {
             const client = await getCalDavClient.call(this);
             const calendars = await client.fetchCalendars();
 
-            const calendar = findCalendarByUrl(calendars, calendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              calendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
                 this.getNode(),
-                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map(c => c.url).join(", ")}`,
+                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map((c) => c.url).join(", ")}`,
                 {
                   itemIndex: i,
                 },
@@ -535,9 +573,16 @@ export class CalDav implements INodeType {
             const client = await getCalDavClient.call(this);
 
             // Extract calendar URL from todo URL (remove the filename)
-            const todoCalendarUrl = todoUrl.substring(0, todoUrl.lastIndexOf("/") + 1);
+            const todoCalendarUrl = todoUrl.substring(
+              0,
+              todoUrl.lastIndexOf("/") + 1,
+            );
             const calendars = await client.fetchCalendars();
-            const calendar = findCalendarByUrl(calendars, todoCalendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              todoCalendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
@@ -582,12 +627,16 @@ export class CalDav implements INodeType {
             const client = await getCalDavClient.call(this);
             const calendars = await client.fetchCalendars();
 
-            const calendar = findCalendarByUrl(calendars, calendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              calendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
                 this.getNode(),
-                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map(c => c.url).join(", ")}`,
+                `Calendar not found at ${calendarUrl}. Available calendars: ${calendars.map((c) => c.url).join(", ")}`,
                 {
                   itemIndex: i,
                 },
@@ -603,7 +652,11 @@ export class CalDav implements INodeType {
               .map((obj) => iCalendarToTodo(obj.data, obj.url, obj.etag));
 
             // Filter by status if specified
-            const statusFilter = this.getNodeParameter("options.status", i, "") as string;
+            const statusFilter = this.getNodeParameter(
+              "options.status",
+              i,
+              "",
+            ) as string;
             if (statusFilter) {
               todos = todos.filter((todo) => todo.status === statusFilter);
             }
@@ -657,9 +710,16 @@ export class CalDav implements INodeType {
             const serverUrl = credentials.serverUrl as string;
 
             // Extract calendar URL from todo URL (remove the filename)
-            const todoCalendarUrl = todoUrl.substring(0, todoUrl.lastIndexOf("/") + 1);
+            const todoCalendarUrl = todoUrl.substring(
+              0,
+              todoUrl.lastIndexOf("/") + 1,
+            );
             const calendars = await client.fetchCalendars();
-            const calendar = findCalendarByUrl(calendars, todoCalendarUrl, serverUrl);
+            const calendar = findCalendarByUrl(
+              calendars,
+              todoCalendarUrl,
+              serverUrl,
+            );
 
             if (!calendar) {
               throw new NodeOperationError(
@@ -731,7 +791,8 @@ export class CalDav implements INodeType {
         }
       } catch (error) {
         if (this.continueOnFail()) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
           returnData.push(
             ...this.helpers.constructExecutionMetaData(
               this.helpers.returnJsonArray({ error: errorMessage }),

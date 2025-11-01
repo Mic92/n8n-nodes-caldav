@@ -2,8 +2,6 @@
 
 > 🔌 Connect your calendars to n8n! Automate Nextcloud, iCloud, Google Calendar, and any CalDAV-compatible calendar.
 
-![Status](https://img.shields.io/badge/status-development-yellow)
-
 [n8n](https://n8n.io/) is a workflow automation platform.
 
 ## Quick Start
@@ -15,6 +13,7 @@
 ## What You Can Do
 
 ### 📅 Manage Your Calendar
+
 - List all your calendars
 - Create, view, update, and delete events
 - Create and manage todos/tasks
@@ -22,12 +21,14 @@
 - Set up recurring events (daily meetings, weekly reminders, etc.)
 
 ### 🔔 Automate with Triggers
+
 - Get notified when someone creates a new event
 - React when events are updated or rescheduled
 - Trigger workflows when events start (great for reminders!)
 - Works perfectly with recurring events - each occurrence triggers separately
 
 ### 🔗 Works With Your Favorite Calendar Apps
+
 - ✅ Nextcloud Calendar
 - ✅ iCloud Calendar
 - ✅ Google Calendar (via CalDAV)
@@ -138,6 +139,7 @@ The CalDAV Trigger node watches your calendar and starts workflows when things h
 ### 💼 Automatic Meeting Room Booking
 
 When someone books a meeting through your website:
+
 ```
 Webhook (booking form)
   ↓
@@ -149,6 +151,7 @@ Send confirmation email
 ### 📧 Daily Schedule Email
 
 Get your day's schedule every morning:
+
 ```
 Schedule Trigger (Every day at 6 AM)
   ↓
@@ -160,16 +163,19 @@ Send email with your schedule
 ### 🔔 Smart Meeting Reminders
 
 Get reminded when any meeting starts (works great with recurring meetings!):
+
 ```
 CalDAV Trigger: Event Started
   ↓
 Send SMS/Slack message
 ```
+
 **Special feature**: If you have a "Daily Standup" recurring event, you'll get a reminder every single day automatically!
 
 ### 📊 Calendar Analytics
 
 Track all your meetings in a database:
+
 ```
 CalDAV Trigger: Event Created
   ↓
@@ -181,6 +187,7 @@ Build reports on meeting trends
 ### 🎯 Task Management Integration
 
 Sync your calendar todos with your project management tool:
+
 ```
 CalDAV Trigger: Event Created (on "Tasks" calendar)
   ↓
@@ -267,6 +274,7 @@ See our [contribution guidelines](CONTRIBUTING.md) for more details.
 ## Credits
 
 This node is built with:
+
 - [tsdav](https://github.com/natelindev/tsdav) - CalDAV client library
 - [ical.js](https://github.com/kewisch/ical.js) - Calendar event parser
 
