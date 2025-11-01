@@ -1,43 +1,43 @@
 {
-	"name": "CalDAV Test - Complete Todo",
-	"nodes": [
-		{
-			"parameters": {},
-			"type": "n8n-nodes-base.manualTrigger",
-			"typeVersion": 1,
-			"position": [0, 0],
-			"id": "manual-trigger",
-			"name": "When clicking 'Execute Workflow'"
-		},
-		{
-			"parameters": {
-				"resource": "todo",
-				"operation": "update",
-				"todoUrl": "http://127.0.0.1:5232/test/tasks/todo-123.ics",
-				"updateFields": {
-					"completed": true,
-					"status": "COMPLETED"
-				}
-			},
-			"type": "n8n-nodes-caldav.calDav",
-			"typeVersion": 1,
-			"position": [200, 0],
-			"id": "caldav-todo-complete",
-			"name": "Complete Todo"
-		}
-	],
-	"connections": {
-		"When clicking 'Execute Workflow'": {
-			"main": [
-				[
-					{
-						"node": "Complete Todo",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		}
-	},
-	"pinData": {}
+  "name": "CalDAV Test - Complete Todo",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "manual-trigger",
+      "name": "When clicking 'Execute Workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "todo",
+        "operation": "update",
+        "todoUrl": "http://127.0.0.1:5232/test/tasks/todo-123.ics",
+        "updateFields": {
+          "completed": true,
+          "status": "COMPLETED"
+        }
+      },
+      "type": "n8n-nodes-caldav.calDav",
+      "typeVersion": 1,
+      "position": [200, 0],
+      "id": "caldav-todo-complete",
+      "name": "Complete Todo"
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute Workflow'": {
+      "main": [
+        [
+          {
+            "node": "Complete Todo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
 }

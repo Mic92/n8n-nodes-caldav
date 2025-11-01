@@ -82,7 +82,10 @@ export async function getCalendars(
     const results = calendars
       .filter((cal) => cal.components?.includes("VEVENT"))
       .map((cal) => ({
-        name: typeof cal.displayName === "string" ? cal.displayName : "Unnamed Calendar",
+        name:
+          typeof cal.displayName === "string"
+            ? cal.displayName
+            : "Unnamed Calendar",
         value: cal.url,
       }))
       .filter(
@@ -116,7 +119,10 @@ export async function getTodoCalendars(
     const results = calendars
       .filter((cal) => cal.components?.includes("VTODO"))
       .map((cal) => ({
-        name: typeof cal.displayName === "string" ? cal.displayName : "Unnamed Calendar",
+        name:
+          typeof cal.displayName === "string"
+            ? cal.displayName
+            : "Unnamed Calendar",
         value: cal.url,
       }))
       .filter(
@@ -357,7 +363,9 @@ export function iCalendarToEvent(
     if (attendees.length > 0) {
       event.attendees = attendees.map((a) => {
         const value = a.getFirstValue();
-        return typeof value === "string" ? value.replace("mailto:", "") : String(value);
+        return typeof value === "string"
+          ? value.replace("mailto:", "")
+          : String(value);
       });
     }
 
@@ -415,7 +423,11 @@ export function iCalendarToTodo(
 
     // Priority
     const priority = vtodo.getFirstPropertyValue("priority");
-    if (priority !== null && priority !== undefined && typeof priority === "number") {
+    if (
+      priority !== null &&
+      priority !== undefined &&
+      typeof priority === "number"
+    ) {
       todo.priority = priority;
     }
 

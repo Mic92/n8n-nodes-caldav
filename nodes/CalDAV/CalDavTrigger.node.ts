@@ -89,7 +89,8 @@ export class CalDavTrigger implements INodeType {
         name: "minutesBefore",
         type: "number",
         default: 0,
-        description: "Trigger X minutes before the event starts (0 = trigger exactly at start time)",
+        description:
+          "Trigger X minutes before the event starts (0 = trigger exactly at start time)",
         typeOptions: {
           minValue: 0,
         },
@@ -195,8 +196,11 @@ export class CalDavTrigger implements INodeType {
             return iCalendarToEvent(obj.data, obj.url, obj.etag);
           } catch (error) {
             // Log parsing errors for debugging
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            this.logger.warn(`Failed to parse event from ${obj.url}: ${errorMessage}`);
+            const errorMessage =
+              error instanceof Error ? error.message : String(error);
+            this.logger.warn(
+              `Failed to parse event from ${obj.url}: ${errorMessage}`,
+            );
             return null;
           }
         })
@@ -253,7 +257,8 @@ export class CalDavTrigger implements INodeType {
 
       return [this.helpers.returnJsonArray(filteredEvents)];
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       throw new NodeOperationError(
         this.getNode(),
         `Failed to poll CalDAV server: ${errorMessage}`,

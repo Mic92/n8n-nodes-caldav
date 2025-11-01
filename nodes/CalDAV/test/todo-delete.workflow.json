@@ -1,39 +1,39 @@
 {
-	"name": "CalDAV Test - Delete Todo",
-	"nodes": [
-		{
-			"parameters": {},
-			"type": "n8n-nodes-base.manualTrigger",
-			"typeVersion": 1,
-			"position": [0, 0],
-			"id": "manual-trigger",
-			"name": "When clicking 'Execute Workflow'"
-		},
-		{
-			"parameters": {
-				"resource": "todo",
-				"operation": "delete",
-				"todoUrl": "http://127.0.0.1:5232/test/tasks/todo-123.ics"
-			},
-			"type": "n8n-nodes-caldav.calDav",
-			"typeVersion": 1,
-			"position": [200, 0],
-			"id": "caldav-todo-delete",
-			"name": "Delete Todo"
-		}
-	],
-	"connections": {
-		"When clicking 'Execute Workflow'": {
-			"main": [
-				[
-					{
-						"node": "Delete Todo",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		}
-	},
-	"pinData": {}
+  "name": "CalDAV Test - Delete Todo",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "manual-trigger",
+      "name": "When clicking 'Execute Workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "todo",
+        "operation": "delete",
+        "todoUrl": "http://127.0.0.1:5232/test/tasks/todo-123.ics"
+      },
+      "type": "n8n-nodes-caldav.calDav",
+      "typeVersion": 1,
+      "position": [200, 0],
+      "id": "caldav-todo-delete",
+      "name": "Delete Todo"
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute Workflow'": {
+      "main": [
+        [
+          {
+            "node": "Delete Todo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
 }

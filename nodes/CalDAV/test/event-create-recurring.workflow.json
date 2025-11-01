@@ -1,49 +1,49 @@
 {
-	"name": "CalDAV Test - Create Recurring Event",
-	"nodes": [
-		{
-			"parameters": {},
-			"type": "n8n-nodes-base.manualTrigger",
-			"typeVersion": 1,
-			"position": [0, 0],
-			"id": "manual-trigger",
-			"name": "When clicking 'Execute Workflow'"
-		},
-		{
-			"parameters": {
-				"resource": "event",
-				"operation": "create",
-				"calendar": {
-					"__rl": true,
-					"mode": "url",
-					"value": "http://127.0.0.1:5232/test/calendar/"
-				},
-				"summary": "Weekly Meeting",
-				"start": "={{ $now.plus({ hours: 1 }).toISO() }}",
-				"end": "={{ $now.plus({ hours: 2 }).toISO() }}",
-				"additionalFields": {
-					"rrule": "FREQ=WEEKLY;COUNT=10"
-				}
-			},
-			"type": "n8n-nodes-caldav.calDav",
-			"typeVersion": 1,
-			"position": [200, 0],
-			"id": "caldav-event-create-recurring",
-			"name": "Create Recurring Event"
-		}
-	],
-	"connections": {
-		"When clicking 'Execute Workflow'": {
-			"main": [
-				[
-					{
-						"node": "Create Recurring Event",
-						"type": "main",
-						"index": 0
-					}
-				]
-			]
-		}
-	},
-	"pinData": {}
+  "name": "CalDAV Test - Create Recurring Event",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "manual-trigger",
+      "name": "When clicking 'Execute Workflow'"
+    },
+    {
+      "parameters": {
+        "resource": "event",
+        "operation": "create",
+        "calendar": {
+          "__rl": true,
+          "mode": "url",
+          "value": "http://127.0.0.1:5232/test/calendar/"
+        },
+        "summary": "Weekly Meeting",
+        "start": "={{ $now.plus({ hours: 1 }).toISO() }}",
+        "end": "={{ $now.plus({ hours: 2 }).toISO() }}",
+        "additionalFields": {
+          "rrule": "FREQ=WEEKLY;COUNT=10"
+        }
+      },
+      "type": "n8n-nodes-caldav.calDav",
+      "typeVersion": 1,
+      "position": [200, 0],
+      "id": "caldav-event-create-recurring",
+      "name": "Create Recurring Event"
+    }
+  ],
+  "connections": {
+    "When clicking 'Execute Workflow'": {
+      "main": [
+        [
+          {
+            "node": "Create Recurring Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {}
 }
