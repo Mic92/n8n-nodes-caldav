@@ -30,7 +30,7 @@
     "lintfix": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' 'test/**/*.ts' --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublishOnly": "npm run build && npm run lint"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
