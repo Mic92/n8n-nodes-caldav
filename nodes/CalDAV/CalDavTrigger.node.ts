@@ -85,6 +85,21 @@ export class CalDavTrigger implements INodeType {
         description: "When to trigger",
       },
       {
+        displayName: "Minutes Before Event",
+        name: "minutesBefore",
+        type: "number",
+        default: 0,
+        description: "Trigger X minutes before the event starts (0 = trigger exactly at start time)",
+        typeOptions: {
+          minValue: 0,
+        },
+        displayOptions: {
+          show: {
+            triggerOn: ["eventStarted"],
+          },
+        },
+      },
+      {
         displayName: "Options",
         name: "options",
         type: "collection",
@@ -130,6 +145,13 @@ export class CalDavTrigger implements INodeType {
     }
     const knownEvents = webhookData.knownEvents as { [uid: string]: string };
 
+    // Get the minutes before offset for eventStarted trigger
+    const minutesBefore =
+      triggerOn === "eventStarted"
+        ? (this.getNodeParameter("minutesBefore", 0) as number)
+        : 0;
+    const offsetMs = minutesBefore * 60 * 1000;
+
     try {
       const client = await getCalDavClient.call(this);
       const calendar = (await client.fetchCalendars()).find(
@@ -153,9 +175,13 @@ export class CalDavTrigger implements INodeType {
       // This follows Google Calendar's behavior: expand recurring events for
       // eventStarted so users get individual triggers for each occurrence
       if (triggerOn === "eventStarted") {
+        // Extend the end time to include events that start within the offset period
+        // This ensures we fetch events that haven't started yet but will trigger soon
+        const fetchEndTime = new Date(now.getTime() + offsetMs);
+
         fetchOptions.timeRange = {
           start: lastTimeChecked.toISOString(),
-          end: now.toISOString(),
+          end: fetchEndTime.toISOString(),
         };
         fetchOptions.expand = true;
       }
@@ -180,10 +206,12 @@ export class CalDavTrigger implements INodeType {
       let filteredEvents = events;
 
       if (triggerOn === "eventStarted") {
-        // Filter events that started between lastTimeChecked and now
+        // Filter events whose trigger time falls between lastTimeChecked and now
+        // Trigger time = start time - offset
         filteredEvents = events.filter((event) => {
           const startTime = new Date(event.start);
-          return startTime >= lastTimeChecked && startTime <= now;
+          const triggerTime = new Date(startTime.getTime() - offsetMs);
+          return triggerTime >= lastTimeChecked && triggerTime <= now;
         });
       } else if (triggerOn === "eventCreated") {
         // New events don't have stored ETags

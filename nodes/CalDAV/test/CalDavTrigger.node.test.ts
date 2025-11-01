@@ -411,6 +411,52 @@ describe("CalDavTrigger Integration Tests", () => {
 			// Expanded instances should not have RRULE
 			expect(result2[0][0].json.rrule).toBeUndefined();
 		});
+
+		it("should trigger for event 10 minutes in the future when minutesBefore=10", async () => {
+			const testCalendarUrl = await createTestCalendar("trigger-with-offset");
+
+			const uid = generateTestUid("offset-event");
+			const staticData: IDataObject = {
+				lastTimeChecked: new Date(Date.now() - 60 * 1000).toISOString(), // 1 minute ago
+			};
+
+			// Create event that starts in 9 minutes 30 seconds
+			// With minutesBefore=10, trigger time is 30 seconds ago (safely in the past)
+			const startTime = new Date(Date.now() + 9.5 * 60 * 1000);
+			const endTime = new Date(Date.now() + 11 * 60 * 1000);
+
+			await createEvent(
+				testCalendarUrl,
+				TEST_CREDENTIALS.calDavApi.username,
+				TEST_CREDENTIALS.calDavApi.password,
+				TEST_CREDENTIALS.calDavApi.serverUrl,
+				uid,
+				"Event in 10 Minutes",
+				startTime,
+				endTime,
+			);
+
+			const mockFunctions = createMockPollFunctions(
+				{
+					calendar: {
+						__rl: true,
+						mode: "url",
+						value: testCalendarUrl,
+					},
+					triggerOn: "eventStarted",
+					minutesBefore: 10,
+				},
+				staticData,
+			);
+
+			// Poll - event starts in 9.5 min, minutesBefore=10, so trigger time was 30s ago
+			const result1 = await triggerNode.poll.call(mockFunctions);
+			expect(result1).toBeDefined();
+
+			if (!result1) throw new Error("Result is null");
+			expect(result1[0]).toHaveLength(1);
+			expect(result1[0][0].json.summary).toBe("Event in 10 Minutes");
+		});
 	});
 
 	describe("ETag Cleanup", () => {
