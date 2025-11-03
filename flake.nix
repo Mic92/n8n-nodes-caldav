@@ -8,16 +8,13 @@
 
   outputs = inputs @ {
     flake-parts,
-    nixpkgs,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin"];
 
       perSystem = {
-        config,
         pkgs,
-        system,
         ...
       }: {
         packages.default = pkgs.buildNpmPackage {
@@ -63,8 +60,6 @@
             echo "Available: radicale, htpasswd, node, npm"
           '';
         };
-
-        formatter = pkgs.alejandra;
       };
     };
 }
