@@ -4,7 +4,7 @@
 
 ![Status](https://img.shields.io/badge/status-development-yellow)
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
+[n8n](https://n8n.io/) is a workflow automation platform.
 
 ## Quick Start
 
