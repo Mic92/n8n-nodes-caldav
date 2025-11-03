@@ -235,12 +235,6 @@ Make sure you're using the correct server URL for your calendar provider (see Se
 - Make sure the calendar URL in your trigger matches exactly
 - For "Event Started" triggers, the event must start within the polling interval
 
-## Need Help?
-
-- 📖 [n8n Community Forum](https://community.n8n.io/)
-- 🐛 [Report bugs on GitHub](https://github.com/Mic92/n8n-nodes-caldav/issues)
-- 💬 [n8n Discord](https://discord.gg/n8n)
-
 ## Version Requirements
 
 - **n8n**: 1.0.0 or higher
