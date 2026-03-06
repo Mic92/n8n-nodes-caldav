@@ -40,10 +40,10 @@
 
             src = ./.;
 
-            npmDepsHash = "sha256-wxr1/O0k4PRSHOuhmgoE3bJy4aiVf8FJl2uSxF2Gca8=";
+            npmDepsHash = builtins.readFile ./npmDepsHash.txt;
 
             makeCacheWritable = true;
-            npmFlags = [ "--ignore-scripts" ];
+            npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
 
             buildPhase = ''
               runHook preBuild
