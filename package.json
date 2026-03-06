@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "ical.js": "^2.0.1",
-    "tsdav": "^2.1.6"
+    "tsdav": "^2.1.8"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
