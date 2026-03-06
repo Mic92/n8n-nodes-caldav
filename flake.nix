@@ -43,7 +43,10 @@
             npmDepsHash = builtins.readFile ./npmDepsHash.txt;
 
             makeCacheWritable = true;
-            npmFlags = [ "--ignore-scripts" "--legacy-peer-deps" ];
+            npmFlags = [
+              "--ignore-scripts"
+              "--legacy-peer-deps"
+            ];
 
             buildPhase = ''
               runHook preBuild
