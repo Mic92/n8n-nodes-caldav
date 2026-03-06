@@ -37,8 +37,6 @@
 
 ## Installation
 
-This node is currently in development and not yet published to npm.
-
 ### Manual Installation
 
 ```bash
