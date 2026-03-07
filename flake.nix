@@ -33,6 +33,9 @@
           config,
           ...
         }:
+        let
+          importNpmLock = pkgs.importNpmLock;
+        in
         {
           packages.default = pkgs.buildNpmPackage {
             pname = "n8n-nodes-caldav";
@@ -40,7 +43,8 @@
 
             src = ./.;
 
-            npmDepsHash = builtins.readFile ./npmDepsHash.txt;
+            npmDeps = importNpmLock { npmRoot = ./.; };
+            npmConfigHook = importNpmLock.npmConfigHook;
 
             makeCacheWritable = true;
             npmFlags = [
@@ -72,7 +76,13 @@
               nodejs
               radicale
               apacheHttpd
+              importNpmLock.hooks.linkNodeModulesHook
             ];
+
+            npmDeps = importNpmLock.buildNodeModules {
+              npmRoot = ./.;
+              inherit (pkgs) nodejs;
+            };
 
             shellHook = ''
               echo "n8n CalDAV Node Development Environment"
