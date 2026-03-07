@@ -82,6 +82,10 @@
             npmDeps = importNpmLock.buildNodeModules {
               npmRoot = ./.;
               inherit (pkgs) nodejs;
+              derivationArgs.npmFlags = [
+                "--ignore-scripts"
+                "--legacy-peer-deps"
+              ];
             };
 
             shellHook = ''
