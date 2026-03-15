@@ -60,6 +60,13 @@
 
             installPhase = ''
               runHook preInstall
+
+              # Prune dev dependencies so transitive deps like isolated-vm
+              # (from n8n-workflow -> @n8n/expression-runtime) don't end up
+              # in the output.  n8n-workflow is a peerDependency provided by
+              # the n8n runtime, so it must not be bundled.
+              npm prune --omit=dev --legacy-peer-deps
+
               mkdir -p $out/lib/node_modules/n8n-nodes-caldav
               cp -r dist package.json node_modules $out/lib/node_modules/n8n-nodes-caldav/
               runHook postInstall
